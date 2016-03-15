@@ -23,11 +23,14 @@
     }
   </style>
   <script>
+
+
     GROUP_COUNT = 30
     ITEM_COUNT = 1000
     DAYS_IN_PAST = 30
 
     var groups = []
+
     for (var i = 0; i < GROUP_COUNT; i++) {
       groups.push({
         id: (i+1)+'',
@@ -36,6 +39,7 @@
     };
 
     var items = []
+
     for (var i = 0; i < ITEM_COUNT; i++) {
       var startDate = faker.date.recent(DAYS_IN_PAST).valueOf() + (DAYS_IN_PAST * 0.3) * 86400 * 1000;
       var startValue = moment(startDate).valueOf();
@@ -54,22 +58,29 @@
 
     items = items.sort(function(a, b) { return b - a; })
 
-    var minTime = moment().add(-6, 'months').valueOf()
-    var maxTime = moment().add(6, 'months').valueOf()
+    //var minTime = moment().add(-6, 'months').valueOf()
+    //var maxTime = moment().add(6, 'months').valueOf()
+    var minTime = moment().startOf('day').add(-1, 'hour').toDate().valueOf()
+    var maxTime = moment().startOf('day').add(1, 'day').add(1, 'hour').toDate().valueOf()
 
     var props = {
       groups: groups,
       items: items,
       fixedHeader: 'fixed',
-      canMove: true, // defaults
-      canResize: true,
+      canMove: false, // defaults
+      canResize: false,
       itemsSorted: true,
       itemTouchSendsClick: false,
       stackItems: true,
       itemHeightRatio: 0.75,
 
-      defaultTimeStart: moment().startOf('day').toDate(),
+      defaultTimeStart: moment().startOf('day').hour(6).toDate(),
       defaultTimeEnd: moment().startOf('day').add(1, 'day').toDate(),
+
+      minShowInHour: true,
+      headerLabelGroupHeight:60,
+      headerLabelHeight: 30,
+      minLabelHeight: 20,
 
       keys: {
         groupIdKey: 'id',
@@ -96,14 +107,19 @@
 
       // this limits the timeline to -6 months ... +6 months
       onTimeChange: function (visibleTimeStart, visibleTimeEnd) {
-        if (visibleTimeStart < minTime && visibleTimeEnd > maxTime) {
-          this.updateScrollCanvas(minTime, maxTime)
-        } else if (visibleTimeStart < minTime) {
-          this.updateScrollCanvas(minTime, minTime + (visibleTimeEnd - visibleTimeStart))
-        } else if (visibleTimeEnd > maxTime) {
-          this.updateScrollCanvas(maxTime - (visibleTimeEnd - visibleTimeStart), maxTime)
+        if(!isNaN(visibleTimeStart) && !isNaN(visibleTimeEnd)) {
+          if (visibleTimeStart < minTime && visibleTimeEnd > maxTime) {
+            this.updateScrollCanvas(minTime, maxTime)
+          } else if (visibleTimeStart < minTime) {
+            this.updateScrollCanvas(minTime, minTime + (visibleTimeEnd - visibleTimeStart))
+          } else if (visibleTimeEnd > maxTime) {
+            this.updateScrollCanvas(maxTime - (visibleTimeEnd - visibleTimeStart), maxTime)
+          } else {
+            this.updateScrollCanvas(visibleTimeStart, visibleTimeEnd)
+          }
         } else {
-          this.updateScrollCanvas(visibleTimeStart, visibleTimeEnd)
+          visibleTimeStart = minTime
+          visibleTimeEnd = maxTime
         }
       }
     }

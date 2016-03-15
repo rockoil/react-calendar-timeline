@@ -83,6 +83,11 @@ export default class Header extends Component {
     }
   }
 
+  minHeaderLabel ()
+  {
+
+  }
+
   periodClick (e) {
     const {time, unit} = e.target.dataset
     this.props.showPeriod(moment(time - 0), unit)
@@ -126,7 +131,8 @@ export default class Header extends Component {
     const {
       canvasTimeStart, canvasTimeEnd, canvasWidth, lineHeight,
       visibleTimeStart, visibleTimeEnd, minUnit, fixedHeader,
-      headerLabelGroupHeight, headerLabelHeight
+      headerLabelGroupHeight, headerLabelHeight, minLabelHeight,
+      minShowInHour
     } = this.props
     const {
       scrollTop
@@ -155,8 +161,8 @@ export default class Header extends Component {
                style={{
                  left: `${left + leftCorrect}px`,
                  width: `${labelWidth}px`,
-                 height: `${headerLabelGroupHeight}px`,
-                 lineHeight: `${headerLabelGroupHeight}px`,
+                 height: (minUnit === 'hour' && minShowInHour) ? `${headerLabelGroupHeight/2}px` : `${headerLabelGroupHeight}px`,
+                 lineHeight: (minUnit === 'hour' && minShowInHour) ? `${headerLabelGroupHeight/2}px` : `${headerLabelGroupHeight}px`,
                  cursor: 'pointer'
                }}>
             {this.headerLabel(time, nextUnit, labelWidth)}
@@ -180,7 +186,7 @@ export default class Header extends Component {
              data-time={time}
              data-unit={minUnit}
              style={{
-               top: `${minUnit === 'year' ? 0 : headerLabelGroupHeight}px`,
+               top: `${minUnit === 'year' ? 0 : minUnit === 'hour' ? headerLabelGroupHeight/2 : headerLabelGroupHeight}px`,
                left: `${left + leftCorrect}px`,
                width: `${labelWidth}px`,
                height: `${(minUnit === 'year' ? headerLabelGroupHeight + headerLabelHeight : headerLabelHeight)}px`,
@@ -191,6 +197,45 @@ export default class Header extends Component {
           {this.subHeaderLabel(time, minUnit, labelWidth)}
         </div>
       )
+
+      if(minShowInHour && minUnit === 'hour')  {
+        let minleft = left;
+
+        let minFirstOfType = firstOfType;
+
+        const minLabelWidth = Math.round(labelWidth/5)
+
+
+
+        for(let i=0;i<6;i++) {
+
+          timeLabels.push(
+            <div key={`label-${(time.minute(i).valueOf() * time.minute(i).valueOf() * (i+1))}`}
+                 href='#'
+                 className={`rct-label ${twoHeaders ? '' : 'rct-label-only'} ${minFirstOfType ? 'rct-first-of-type' : ''} `}
+                 data-time={time}
+                 data-unit={minUnit}
+                 style={{
+               top: `${minUnit === 'year' ? 0 : minUnit === 'hour' ? headerLabelGroupHeight : headerLabelGroupHeight}px`,
+               left: `${minleft + leftCorrect}px`,
+               width: `${minLabelWidth}px`,
+               height: `${(minUnit === 'year' ? headerLabelGroupHeight + headerLabelHeight : headerLabelHeight)}px`,
+               lineHeight: `${(minUnit === 'year' ? headerLabelGroupHeight + headerLabelHeight : headerLabelHeight)}px`,
+               fontSize: labelWidth > 30 ? '14' : labelWidth > 20 ? '12' : '10',
+               cursor: 'pointer'
+             }}>
+              {i * 1}
+            </div>
+          )
+
+          minleft += Math.round(labelWidth / 6)
+          minFirstOfType = false;
+        }
+      }
+
+
+
+
     })
 
     const { zIndex } = this.props
@@ -238,7 +283,8 @@ Header.propTypes = {
   minUnit: React.PropTypes.string.isRequired,
   width: React.PropTypes.number.isRequired,
   fixedHeader: React.PropTypes.oneOf(['fixed', 'absolute', 'none']),
-  zIndex: React.PropTypes.number
+  zIndex: React.PropTypes.number,
+  minShowInHour: React.PropTypes.bool
 }
 Header.defaultProps = {
   fixedHeader: 'none',

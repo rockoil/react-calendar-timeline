@@ -528,7 +528,7 @@ export default class ReactCalendarTimeline extends Component {
     return label ? <InfoLabel label={label} /> : ''
   }
 
-  header (canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, minUnit, headerLabelGroupHeight, headerLabelHeight) {
+  header (canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, minUnit, headerLabelGroupHeight, headerLabelHeight, minShowInHour) {
     return (
       <Header canvasTimeStart={canvasTimeStart}
               canvasTimeEnd={canvasTimeEnd}
@@ -543,7 +543,8 @@ export default class ReactCalendarTimeline extends Component {
               visibleTimeEnd={this.state.visibleTimeEnd}
               fixedHeader={this.props.fixedHeader}
               zIndex={this.props.zIndexStart + 1}
-              showPeriod={this.showPeriod.bind(this)} />
+              showPeriod={this.showPeriod.bind(this)}
+              minShowInHour={this.props.minShowInHour} />
     )
   }
 
@@ -611,7 +612,7 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   render () {
-    const {items, groups, headerLabelGroupHeight, headerLabelHeight} = this.props
+    const {items, groups, headerLabelGroupHeight, headerLabelHeight, minShowInHour} = this.props
     const { draggingItem, resizingItem, isDragging, width, visibleTimeStart, visibleTimeEnd, canvasTimeStart } = this.state
     let { dimensionItems, height, groupHeights, groupTops } = this.state
     const zoom = visibleTimeEnd - visibleTimeStart
@@ -672,7 +673,8 @@ export default class ReactCalendarTimeline extends Component {
                 canvasWidth,
                 minUnit,
                 headerLabelGroupHeight,
-                headerLabelHeight
+                headerLabelHeight,
+                minShowInHour
                 )
               }
             </div>
@@ -732,7 +734,9 @@ ReactCalendarTimeline.propTypes = {
   onTimeInit: React.PropTypes.func,
   onBoundsChange: React.PropTypes.func,
 
-  children: React.PropTypes.node
+  children: React.PropTypes.node,
+
+  minShowInHour: React.PropTypes.bool
 }
 ReactCalendarTimeline.defaultProps = {
   sidebarWidth: 150,
@@ -771,6 +775,8 @@ ReactCalendarTimeline.defaultProps = {
   defaultTimeEnd: null,
 
   itemTouchSendsClick: false,
+
+  minShowInHour:false,
 
   style: {},
   keys: defaultKeys,

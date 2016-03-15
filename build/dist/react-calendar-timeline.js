@@ -55,13 +55,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _Timeline = __webpack_require__(1);
-
+	
 	var _Timeline2 = _interopRequireDefault(_Timeline);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -160,12 +160,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      visibleTimeStart = _this.props.visibleTimeStart;
 	      visibleTimeEnd = _this.props.visibleTimeEnd;
 	    } else {
-	      var _Math, _Math2;
-	
-	      visibleTimeStart = (_Math = Math).min.apply(_Math, _toConsumableArray(_this.props.items.map(function (item) {
+	      visibleTimeStart = Math.min.apply(Math, _toConsumableArray(_this.props.items.map(function (item) {
 	        return (0, _utils._get)(item, 'start').getTime();
 	      })));
-	      visibleTimeEnd = (_Math2 = Math).max.apply(_Math2, _toConsumableArray(_this.props.items.map(function (item) {
+	      visibleTimeEnd = Math.max.apply(Math, _toConsumableArray(_this.props.items.map(function (item) {
 	        return (0, _utils._get)(item, 'end').getTime();
 	      })));
 	
@@ -454,9 +452,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var scrollComponent = this.refs.scrollComponent;
 	        scrollComponent.scrollLeft += e.deltaY;
 	      } else if (e.altKey) {
-	        var parentPosition = (0, _utils.getParentPosition)(e.currentTarget);
-	        var xPosition = e.clientX - parentPosition.x;
-	        this.changeZoom(1.0 + e.deltaY / 500, xPosition / this.state.width);
+	        var _parentPosition = (0, _utils.getParentPosition)(e.currentTarget);
+	        var _xPosition = e.clientX - _parentPosition.x;
+	        this.changeZoom(1.0 + e.deltaY / 500, _xPosition / this.state.width);
 	      } else {
 	        if (this.props.fixedHeader === 'fixed') {
 	          e.preventDefault();
@@ -468,9 +466,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	          if (e.deltaY !== 0) {
 	            window.scrollTo(window.pageXOffset, window.pageYOffset + e.deltaY);
 	            if (traditionalZoom) {
-	              var parentPosition = (0, _utils.getParentPosition)(e.currentTarget);
-	              var xPosition = e.clientX - parentPosition.x;
-	              this.changeZoom(1.0 + e.deltaY / 50, xPosition / this.state.width);
+	              var _parentPosition2 = (0, _utils.getParentPosition)(e.currentTarget);
+	              var _xPosition2 = e.clientX - _parentPosition2.x;
+	              this.changeZoom(1.0 + e.deltaY / 50, _xPosition2 / this.state.width);
 	            }
 	          }
 	        }
@@ -721,7 +719,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }, {
 	    key: 'header',
-	    value: function header(canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, minUnit, headerLabelGroupHeight, headerLabelHeight) {
+	    value: function header(canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, minUnit, headerLabelGroupHeight, headerLabelHeight, minShowInHour) {
 	      return _react2.default.createElement(_Header2.default, { canvasTimeStart: canvasTimeStart,
 	        canvasTimeEnd: canvasTimeEnd,
 	        canvasWidth: canvasWidth,
@@ -735,7 +733,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        visibleTimeEnd: this.state.visibleTimeEnd,
 	        fixedHeader: this.props.fixedHeader,
 	        zIndex: this.props.zIndexStart + 1,
-	        showPeriod: this.showPeriod.bind(this) });
+	        showPeriod: this.showPeriod.bind(this),
+	        minShowInHour: this.props.minShowInHour });
 	    }
 	  }, {
 	    key: 'sidebar',
@@ -808,6 +807,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var groups = _props4.groups;
 	      var headerLabelGroupHeight = _props4.headerLabelGroupHeight;
 	      var headerLabelHeight = _props4.headerLabelHeight;
+	      var minShowInHour = _props4.minShowInHour;
 	      var _state3 = this.state;
 	      var draggingItem = _state3.draggingItem;
 	      var resizingItem = _state3.resizingItem;
@@ -880,7 +880,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	              this.horizontalLines(canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, groupHeights, headerHeight),
 	              this.todayLine(canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, minUnit, height, headerHeight),
 	              this.infoLabel(),
-	              this.header(canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, minUnit, headerLabelGroupHeight, headerLabelHeight)
+	              this.header(canvasTimeStart, zoom, canvasTimeEnd, canvasWidth, minUnit, headerLabelGroupHeight, headerLabelHeight, minShowInHour)
 	            )
 	          )
 	        )
@@ -943,7 +943,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  onTimeInit: _react2.default.PropTypes.func,
 	  onBoundsChange: _react2.default.PropTypes.func,
 	
-	  children: _react2.default.PropTypes.node
+	  children: _react2.default.PropTypes.node,
+	
+	  minShowInHour: _react2.default.PropTypes.bool
 	};
 	ReactCalendarTimeline.defaultProps = {
 	  sidebarWidth: 150,
@@ -982,6 +984,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  defaultTimeEnd: null,
 	
 	  itemTouchSendsClick: false,
+	
+	  minShowInHour: false,
 	
 	  style: {},
 	  keys: defaultKeys,
@@ -2498,6 +2502,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }, {
+	    key: 'minHeaderLabel',
+	    value: function minHeaderLabel() {}
+	  }, {
 	    key: 'periodClick',
 	    value: function periodClick(e) {
 	      var _e$target$dataset = e.target.dataset;
@@ -2559,6 +2566,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var fixedHeader = _props.fixedHeader;
 	      var headerLabelGroupHeight = _props.headerLabelGroupHeight;
 	      var headerLabelHeight = _props.headerLabelHeight;
+	      var minLabelHeight = _props.minLabelHeight;
+	      var minShowInHour = _props.minShowInHour;
 	      var scrollTop = this.state.scrollTop;
 	
 	      var ratio = canvasWidth / (canvasTimeEnd - canvasTimeStart);
@@ -2587,8 +2596,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                style: {
 	                  left: left + leftCorrect + 'px',
 	                  width: labelWidth + 'px',
-	                  height: headerLabelGroupHeight + 'px',
-	                  lineHeight: headerLabelGroupHeight + 'px',
+	                  height: minUnit === 'hour' && minShowInHour ? headerLabelGroupHeight / 2 + 'px' : headerLabelGroupHeight + 'px',
+	                  lineHeight: minUnit === 'hour' && minShowInHour ? headerLabelGroupHeight / 2 + 'px' : headerLabelGroupHeight + 'px',
 	                  cursor: 'pointer'
 	                } },
 	              _this3.headerLabel(time, nextUnit, labelWidth)
@@ -2613,7 +2622,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            'data-time': time,
 	            'data-unit': minUnit,
 	            style: {
-	              top: (minUnit === 'year' ? 0 : headerLabelGroupHeight) + 'px',
+	              top: (minUnit === 'year' ? 0 : minUnit === 'hour' ? headerLabelGroupHeight / 2 : headerLabelGroupHeight) + 'px',
 	              left: left + leftCorrect + 'px',
 	              width: labelWidth + 'px',
 	              height: (minUnit === 'year' ? headerLabelGroupHeight + headerLabelHeight : headerLabelHeight) + 'px',
@@ -2623,6 +2632,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	            } },
 	          _this3.subHeaderLabel(time, minUnit, labelWidth)
 	        ));
+	
+	        if (minShowInHour && minUnit === 'hour') {
+	          var minleft = left;
+	
+	          var minFirstOfType = firstOfType;
+	
+	          var minLabelWidth = Math.round(labelWidth / 5);
+	
+	          for (var i = 0; i < 6; i++) {
+	
+	            timeLabels.push(_react2.default.createElement(
+	              'div',
+	              { key: 'label-' + time.minute(i).valueOf() * time.minute(i).valueOf() * (i + 1),
+	                href: '#',
+	                className: 'rct-label ' + (twoHeaders ? '' : 'rct-label-only') + ' ' + (minFirstOfType ? 'rct-first-of-type' : '') + ' ',
+	                'data-time': time,
+	                'data-unit': minUnit,
+	                style: {
+	                  top: (minUnit === 'year' ? 0 : minUnit === 'hour' ? headerLabelGroupHeight : headerLabelGroupHeight) + 'px',
+	                  left: minleft + leftCorrect + 'px',
+	                  width: minLabelWidth + 'px',
+	                  height: (minUnit === 'year' ? headerLabelGroupHeight + headerLabelHeight : headerLabelHeight) + 'px',
+	                  lineHeight: (minUnit === 'year' ? headerLabelGroupHeight + headerLabelHeight : headerLabelHeight) + 'px',
+	                  fontSize: labelWidth > 30 ? '14' : labelWidth > 20 ? '12' : '10',
+	                  cursor: 'pointer'
+	                } },
+	              i * 1
+	            ));
+	
+	            minleft += Math.round(labelWidth / 6);
+	            minFirstOfType = false;
+	          }
+	        }
 	      });
 	
 	      var zIndex = this.props.zIndex;
@@ -2677,7 +2719,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  minUnit: _react2.default.PropTypes.string.isRequired,
 	  width: _react2.default.PropTypes.number.isRequired,
 	  fixedHeader: _react2.default.PropTypes.oneOf(['fixed', 'absolute', 'none']),
-	  zIndex: _react2.default.PropTypes.number
+	  zIndex: _react2.default.PropTypes.number,
+	  minShowInHour: _react2.default.PropTypes.bool
 	};
 	Header.defaultProps = {
 	  fixedHeader: 'none',
