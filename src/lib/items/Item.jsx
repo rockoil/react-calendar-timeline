@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import interact from 'interact.js'
+import { OverlayTrigger, Popover } from 'react-bootstrap'
 
 import { _get } from '../utils'
 
@@ -235,6 +236,7 @@ export default class Item extends Component {
         this.actualClick(e, e.pointerType === 'mouse' ? 'click' : 'touch')
       })
 
+
     this.setState({
       interactMounted: true
     })
@@ -280,8 +282,11 @@ export default class Item extends Component {
     if (!this.state.interactMounted) {
       e.preventDefault()
       this.startedClicking = true
+
     }
   };
+
+
 
   onMouseUp = (e) => {
     if (!this.state.interactMounted && this.startedClicking) {
@@ -316,6 +321,7 @@ export default class Item extends Component {
     }
   }
 
+
   render () {
     const dimensions = this.props.dimensions
     if (typeof this.props.order === 'undefined' || this.props.order === null) {
@@ -337,6 +343,7 @@ export default class Item extends Component {
     }
 
     return (
+      <OverlayTrigger  trigger={['hover','focus']} placement="bottom" overlay={<Popover id={this.itemId} title={this.itemTitle}><strong>Holy guacamole!</strong> Check this info.</Popover>}>
       <div key={this.itemId}
            ref='item'
            className={classNames}
@@ -347,13 +354,20 @@ export default class Item extends Component {
            onTouchEnd={this.onTouchEnd}
            onDoubleClick={this.handleDoubleClick}
            style={style}>
+
         <div className='rct-item-overflow'>
+
           <div className='rct-item-content'>
+
             {this.itemTitle}
+
           </div>
+
         </div>
         { this.props.useResizeHandle ? <div ref='dragRight' className='rct-drag-right'></div> : '' }
+
       </div>
+      </OverlayTrigger>
     )
   }
 }

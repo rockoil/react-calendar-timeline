@@ -356,6 +356,7 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   selectItem (item, clickType) {
+    console.log(clickType)
     if (this.state.selectedItem === item || (this.props.itemTouchSendsClick && clickType === 'touch')) {
       if (item && this.props.onItemClick) {
         this.props.onItemClick(item)
@@ -439,6 +440,8 @@ export default class ReactCalendarTimeline extends Component {
       this.setState({dragStartPosition: e.pageX})
     }
   }
+
+
 
   handleMouseUp (e) {
     this.setState({isDragging: false, dragStartPosition: null})
@@ -764,6 +767,7 @@ ReactCalendarTimeline.defaultProps = {
   onItemMove: null,
   onItemResize: null,
   onItemClick: null,
+
   onCanvasClick: null,
   onItemDoubleClick: null,
 

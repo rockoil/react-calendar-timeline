@@ -3,8 +3,29 @@
 <head>
   <title>react calendar timeline Demo</title>
   <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body style='font-family: "Lato";margin: 0;font-size: 13px;'>
+
+    <div  id="myModal" class="modal fade" tabindex="-1" role="dialog" style="z-index: 100000;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Modal title</h4>
+          </div>
+          <div class="modal-body">
+            <p>One fine body&hellip;</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
   <div id="main"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.js"></script>
@@ -16,13 +37,28 @@
   <script src="build/dist/react-calendar-timeline.min.js"></script> -->
   <link href='build/dist/react-calendar-timeline.css' rel='stylesheet' type='text/css'>
   <script src="build/dist/react-calendar-timeline.js"></script>
+  <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
   <style>
     .react-calendar-timeline .rct-item.item-weekend {
       background: #21F32C;
       border-color: #29B31A;
     }
   </style>
-  <script>
+  <script type="text/javascript">
+
+
+    $(document).ready(function() {
+      console.log('test')
+
+     window.test = function ()
+      {
+        //$('#myModal').modal('toggle');
+
+      }
+
+    });
 
 
     GROUP_COUNT = 30
@@ -67,7 +103,7 @@
       groups: groups,
       items: items,
       fixedHeader: 'fixed',
-      canMove: false, // defaults
+      canMove: true, // defaults
       canResize: false,
       itemsSorted: true,
       itemTouchSendsClick: false,
@@ -92,8 +128,13 @@
         itemTimeEndKey: 'end'
       },
 
-      itemClick: function(item) {
+      onItemClick: function(item) {
         console.log("Clicked: " + item);
+      },
+
+      onItemMove: function(item, dragTime, newGroupOrder)
+      {
+
       },
 
       moveResizeValidator: function(action, item, time) {
@@ -128,6 +169,10 @@
 
     /* jshint undef:false */
     ReactDOM.render(React.createElement(ReactCalendarTimeline['default'], props, filter), document.getElementById('main'));
+
+
+
+
   </script>
 </body>
 </html>
