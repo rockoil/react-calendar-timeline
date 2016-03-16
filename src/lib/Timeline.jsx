@@ -356,7 +356,6 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   selectItem (item, clickType) {
-    console.log(clickType)
     if (this.state.selectedItem === item || (this.props.itemTouchSendsClick && clickType === 'touch')) {
       if (item && this.props.onItemClick) {
         this.props.onItemClick(item)

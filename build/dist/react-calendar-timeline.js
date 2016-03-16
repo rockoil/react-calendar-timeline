@@ -528,7 +528,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'selectItem',
 	    value: function selectItem(item, clickType) {
-	      console.log(clickType);
 	      if (this.state.selectedItem === item || this.props.itemTouchSendsClick && clickType === 'touch') {
 	        if (item && this.props.onItemClick) {
 	          this.props.onItemClick(item);
@@ -1471,6 +1470,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	
 	            _this2.props.onDrop(_this2.itemId, dragTime, _this2.props.order + _this2.dragGroupDelta(e));
+	
+	            console.log(_this2.props.item.start);
+	            _this2.setState({
+	              start: dragTime
+	            });
 	          }
 	
 	          _this2.setState({
@@ -1601,7 +1605,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      return _react2.default.createElement(
 	        _reactBootstrap.OverlayTrigger,
-	        { trigger: ['hover', 'focus'], placement: 'bottom', overlay: _react2.default.createElement(
+	        {
+	          trigger: ['hover', 'focus'],
+	
+	          placement: 'bottom', overlay: _react2.default.createElement(
 	            _reactBootstrap.Popover,
 	            { id: this.itemId, title: this.itemTitle },
 	            _react2.default.createElement(
@@ -1613,15 +1620,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	          ) },
 	        _react2.default.createElement(
 	          'div',
-	          { key: this.itemId,
+	          {
+	            key: this.itemId,
 	            ref: 'item',
 	            className: classNames,
 	            title: this.itemTitle,
 	            onMouseDown: this.onMouseDown,
 	            onMouseUp: this.onMouseUp,
+	
+	            onDoubleClick: this.handleDoubleClick,
 	            onTouchStart: this.onTouchStart,
 	            onTouchEnd: this.onTouchEnd,
-	            onDoubleClick: this.handleDoubleClick,
 	            style: style },
 	          _react2.default.createElement(
 	            'div',

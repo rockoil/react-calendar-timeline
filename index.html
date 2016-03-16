@@ -103,7 +103,7 @@
       groups: groups,
       items: items,
       fixedHeader: 'fixed',
-      canMove: true, // defaults
+      canMove: false, // defaults
       canResize: false,
       itemsSorted: true,
       itemTouchSendsClick: false,
@@ -134,7 +134,12 @@
 
       onItemMove: function(item, dragTime, newGroupOrder)
       {
+        var it = items[item];
 
+        //items[item].start = dragTime
+
+        console.log(dragTime)
+        console.log(items[item].start);
       },
 
       moveResizeValidator: function(action, item, time) {

@@ -175,6 +175,12 @@ export default class Item extends Component {
             }
 
             this.props.onDrop(this.itemId, dragTime, this.props.order + this.dragGroupDelta(e))
+
+            console.log(this.props.item.start)
+            this.setState({
+              start :dragTime
+            })
+
           }
 
           this.setState({
@@ -343,16 +349,22 @@ export default class Item extends Component {
     }
 
     return (
-      <OverlayTrigger  trigger={['hover','focus']} placement="bottom" overlay={<Popover id={this.itemId} title={this.itemTitle}><strong>Holy guacamole!</strong> Check this info.</Popover>}>
-      <div key={this.itemId}
-           ref='item'
+      <OverlayTrigger
+        trigger={['hover','focus']}
+
+
+        placement="bottom" overlay={<Popover id={this.itemId} title={this.itemTitle}><strong>Holy guacamole!</strong> Check this info.</Popover>}>
+      <div
+        key={this.itemId}
+        ref='item'
            className={classNames}
            title={this.itemTitle}
-           onMouseDown={this.onMouseDown}
-           onMouseUp={this.onMouseUp}
-           onTouchStart={this.onTouchStart}
-           onTouchEnd={this.onTouchEnd}
-           onDoubleClick={this.handleDoubleClick}
+        onMouseDown={this.onMouseDown}
+        onMouseUp={this.onMouseUp}
+
+        onDoubleClick={this.handleDoubleClick}
+        onTouchStart={this.onTouchStart}
+        onTouchEnd={this.onTouchEnd}
            style={style}>
 
         <div className='rct-item-overflow'>
