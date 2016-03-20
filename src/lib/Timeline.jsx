@@ -361,7 +361,9 @@ export default class ReactCalendarTimeline extends Component {
         this.props.onItemClick(item)
       }
     } else {
+      // first click
       this.setState({selectedItem: item})
+
     }
   }
 

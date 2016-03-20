@@ -533,6 +533,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          this.props.onItemClick(item);
 	        }
 	      } else {
+	        // first click
 	        this.setState({ selectedItem: item });
 	      }
 	    }
@@ -1134,9 +1135,147 @@ return /******/ (function(modules) { // webpackBootstrap
 	      //   })
 	      // }
 	
+	      var popover = _react2.default.createElement(
+	        Popover,
+	        { title: 'popover' },
+	        'very popover. such engagement'
+	      );
+	      var tooltip = _react2.default.createElement(
+	        Tooltip,
+	        null,
+	        'wow.'
+	      );
+	
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'rct-items' },
+	        _react2.default.createElement(
+	          Modal,
+	          { show: this.state.showModal, onHide: this.close },
+	          _react2.default.createElement(
+	            Modal.Header,
+	            { closeButton: true },
+	            _react2.default.createElement(
+	              Modal.Title,
+	              null,
+	              'Modal heading'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            Modal.Body,
+	            null,
+	            _react2.default.createElement(
+	              'h4',
+	              null,
+	              'Text in a modal'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Duis mollis, est non commodo luctus, nisi erat porttitor ligula.'
+	            ),
+	            _react2.default.createElement(
+	              'h4',
+	              null,
+	              'Popover in a modal'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'there is a ',
+	              _react2.default.createElement(
+	                OverlayTrigger,
+	                { overlay: popover },
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#' },
+	                  'popover'
+	                )
+	              ),
+	              ' here'
+	            ),
+	            _react2.default.createElement(
+	              'h4',
+	              null,
+	              'Tooltips in a modal'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'there is a ',
+	              _react2.default.createElement(
+	                OverlayTrigger,
+	                { overlay: tooltip },
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '#' },
+	                  'tooltip'
+	                )
+	              ),
+	              ' here'
+	            ),
+	            _react2.default.createElement('hr', null),
+	            _react2.default.createElement(
+	              'h4',
+	              null,
+	              'Overflowing text to show scroll behavior'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            Modal.Footer,
+	            null,
+	            _react2.default.createElement(
+	              Button,
+	              { onClick: this.close },
+	              'Close'
+	            )
+	          )
+	        ),
 	        visibleItems.map(function (item) {
 	          return _react2.default.createElement(_Item2.default, { key: (0, _utils._get)(item, itemIdKey),
 	            item: item,
