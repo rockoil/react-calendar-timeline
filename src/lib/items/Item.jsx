@@ -55,6 +55,14 @@ export default class Item extends Component {
     this.itemTitle = _get(props.item, props.keys.itemTitleKey)
     this.itemTimeStart = _get(props.item, props.keys.itemTimeStartKey)
     this.itemTimeEnd = _get(props.item, props.keys.itemTimeEndKey)
+    this.itemFromDate = _get(props.item, props.keys.itemFromDate)
+    this.itemUserName = _get(props.item, props.keys.itemUserName)
+    this.itemFullName = _get(props.item, props.keys.itemFullName)
+    this.itemPhone = _get(props.item, props.keys.itemPhone)
+    this.itemLevel = _get(props.item, props.keys.itemLevel)
+    this.itemTalkIdx = _get(props.item, props.keys.itemTalkIdx)
+    this.itemTalkInterval = _get(props.item, props.keys.itemTalkInterval)
+    this.itemTalkStatus = _get(props.item, props.keys.itemTalkStatus)
   }
 
   coordinateToTimeRatio (props = this.props) {
@@ -334,11 +342,23 @@ export default class Item extends Component {
       return null
     }
 
-    const classNames = 'rct-item' +
+    let cNames = '';
+
+    if(this.itemTitle == 'Vi')
+      cNames = 'rct-vi-item'
+    else if(this.itemTitle == 'Vo')
+      cNames = 'rct-vo-item'
+    else
+      cNames = 'rct-item'
+
+
+    const classNames = cNames +
                        (this.props.selected ? ' selected' : '') +
                        (this.canMove(this.props) ? ' can-move' : '') +
                        (this.canResize(this.props) ? ' can-resize' : '') +
                        (this.props.item.className ? ` ${this.props.item.className}` : '')
+
+
 
     const style = {
       left: `${dimensions.left}px`,
@@ -353,12 +373,12 @@ export default class Item extends Component {
         trigger={['hover','focus']}
 
 
-        placement="bottom" overlay={<Popover id={this.itemId} title={this.itemTitle}><strong>Holy guacamole!</strong> Check this info.</Popover>}>
+        placement="bottom" overlay={<Popover id={this.itemId} title={this.itemTitle + " " + this.itemFromDate}><strong>{this.itemFullName}({this.itemUserName})</strong> <br/>{this.itemTalkStatus == 1 ? 'EngHan Video' : ''} / {this.itemTalkInterval}min.</Popover>}>
       <div
         key={this.itemId}
         ref='item'
            className={classNames}
-           title={this.itemTitle}
+
         onMouseDown={this.onMouseDown}
         onMouseUp={this.onMouseUp}
 

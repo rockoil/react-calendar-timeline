@@ -86,6 +86,10 @@
         title: faker.hacker.phrase(),
         start: startValue,
         end: endValue,
+        phone:'000-000-000',
+        fromDate:'10:20',
+        toDate:'10:40',
+        classView:'V/20',
         canMove: startValue > new Date().getTime(),
         canResize: endValue > new Date().getTime(),
         className: (moment(startDate).day() === 6 || moment(startDate).day() === 0) ? 'item-weekend' : ''
@@ -125,7 +129,15 @@
         itemTitleKey: 'title',
         itemGroupKey: 'group',
         itemTimeStartKey: 'start',
-        itemTimeEndKey: 'end'
+        itemTimeEndKey: 'end',
+        itemFromDate: 'fromDate',
+        itemUserName: 'username',
+        itemFullName: 'fullname',
+        itemPhone: 'phone',
+        itemLevel: 'lv',
+        itemTalkIdx: 'talkidx',
+        itemTalkInterval: 'intervaldate',
+        itemTalkStatus: 'talkstatus'
       },
 
       onItemClick: function(item) {

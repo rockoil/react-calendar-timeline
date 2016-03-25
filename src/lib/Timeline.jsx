@@ -9,6 +9,8 @@ import Header from './layout/Header'
 import VerticalLines from './lines/VerticalLines'
 import HorizontalLines from './lines/HorizontalLines'
 import TodayLine from './lines/TodayLine'
+import Modal from 'react-bootstrap/lib/Modal'
+import Button from 'react-bootstrap/lib/Button'
 
 import { getMinUnit, getNextUnit, getParentPosition, _get, _length, stack, nostack, calculateDimensions, getGroupOrders, getVisibleItems, hasSomeParentTheClass } from './utils.js'
 
@@ -62,7 +64,8 @@ export default class ReactCalendarTimeline extends Component {
       resizeEnd: null,
       isDragging: false,
       topOffset: 0,
-      resizingItem: null
+      resizingItem: null,
+
     }
 
     const {dimensionItems, height, groupHeights, groupTops} = this.stackItems(props.items, props.groups, this.state.canvasTimeStart, this.state.visibleTimeStart, this.state.visibleTimeEnd, this.state.width)
@@ -360,6 +363,8 @@ export default class ReactCalendarTimeline extends Component {
       if (item && this.props.onItemClick) {
         this.props.onItemClick(item)
       }
+
+
     } else {
       // first click
       this.setState({selectedItem: item})
@@ -385,7 +390,7 @@ export default class ReactCalendarTimeline extends Component {
   scrollAreaClick (e) {
     // if not clicking on an item
 
-    if (!hasSomeParentTheClass(e.target, 'rct-item')) {
+    if (!hasSomeParentTheClass(e.target, 'rct-item') && !hasSomeParentTheClass(e.target, 'rct-vo-item') && !hasSomeParentTheClass(e.target, 'rct-vi-item')) {
       if (this.state.selectedItem) {
         this.selectItem(null)
       } else if (this.props.onCanvasClick) {
@@ -516,7 +521,8 @@ export default class ReactCalendarTimeline extends Component {
              itemDrop={this.dropItem.bind(this)}
              onItemDoubleClick={this.props.onItemDoubleClick}
              itemResizing={this.resizingItem.bind(this)}
-             itemResized={this.resizedItem.bind(this)} />
+             itemResized={this.resizedItem.bind(this)}
+              />
     )
   }
 
@@ -615,6 +621,8 @@ export default class ReactCalendarTimeline extends Component {
     return {dimensionItems, height, groupHeights, groupTops}
   }
 
+
+
   render () {
     const {items, groups, headerLabelGroupHeight, headerLabelHeight, minShowInHour} = this.props
     const { draggingItem, resizingItem, isDragging, width, visibleTimeStart, visibleTimeEnd, canvasTimeStart } = this.state
@@ -650,6 +658,7 @@ export default class ReactCalendarTimeline extends Component {
 
     return (
       <div style={this.props.style} ref='container' className='react-calendar-timeline'>
+
         <div style={outerComponentStyle} className='rct-outer'>
           {this.sidebar(height, groupHeights, headerHeight)}
           <div ref='scrollComponent'
@@ -740,7 +749,8 @@ ReactCalendarTimeline.propTypes = {
 
   children: React.PropTypes.node,
 
-  minShowInHour: React.PropTypes.bool
+  minShowInHour: React.PropTypes.bool,
+
 }
 ReactCalendarTimeline.defaultProps = {
   sidebarWidth: 150,
@@ -797,5 +807,6 @@ ReactCalendarTimeline.defaultProps = {
   onTimeInit: null,
   // called when the canvas area of the calendar changes
   onBoundsChange: null,
-  children: null
+  children: null,
+
 }

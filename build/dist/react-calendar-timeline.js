@@ -120,6 +120,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _TodayLine2 = _interopRequireDefault(_TodayLine);
 	
+	var _Modal = __webpack_require__(192);
+	
+	var _Modal2 = _interopRequireDefault(_Modal);
+	
+	var _Button = __webpack_require__(62);
+	
+	var _Button2 = _interopRequireDefault(_Button);
+	
 	var _utils = __webpack_require__(257);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -191,6 +199,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isDragging: false,
 	      topOffset: 0,
 	      resizingItem: null
+	
 	    };
 	
 	    var _this$stackItems = _this.stackItems(props.items, props.groups, _this.state.canvasTimeStart, _this.state.visibleTimeStart, _this.state.visibleTimeEnd, _this.state.width);
@@ -564,7 +573,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function scrollAreaClick(e) {
 	      // if not clicking on an item
 	
-	      if (!(0, _utils.hasSomeParentTheClass)(e.target, 'rct-item')) {
+	      if (!(0, _utils.hasSomeParentTheClass)(e.target, 'rct-item') && !(0, _utils.hasSomeParentTheClass)(e.target, 'rct-vo-item') && !(0, _utils.hasSomeParentTheClass)(e.target, 'rct-vi-item')) {
 	        if (this.state.selectedItem) {
 	          this.selectItem(null);
 	        } else if (this.props.onCanvasClick) {
@@ -703,7 +712,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        itemDrop: this.dropItem.bind(this),
 	        onItemDoubleClick: this.props.onItemDoubleClick,
 	        itemResizing: this.resizingItem.bind(this),
-	        itemResized: this.resizedItem.bind(this) });
+	        itemResized: this.resizedItem.bind(this)
+	      });
 	    }
 	  }, {
 	    key: 'infoLabel',
@@ -947,6 +957,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  children: _react2.default.PropTypes.node,
 	
 	  minShowInHour: _react2.default.PropTypes.bool
+	
 	};
 	ReactCalendarTimeline.defaultProps = {
 	  sidebarWidth: 150,
@@ -1004,6 +1015,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // called when the canvas area of the calendar changes
 	  onBoundsChange: null,
 	  children: null
+	
 	};
 
 /***/ },
@@ -1047,6 +1059,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _Item2 = _interopRequireDefault(_Item);
 	
+	var _Popover = __webpack_require__(245);
+	
+	var _Popover2 = _interopRequireDefault(_Popover);
+	
+	var _Modal = __webpack_require__(192);
+	
+	var _Modal2 = _interopRequireDefault(_Modal);
+	
+	var _Button = __webpack_require__(62);
+	
+	var _Button2 = _interopRequireDefault(_Button);
+	
 	var _utils = __webpack_require__(257);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -1061,10 +1085,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Items = function (_Component) {
 	  _inherits(Items, _Component);
 	
-	  function Items() {
+	  function Items(props) {
 	    _classCallCheck(this, Items);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Items).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Items).call(this, props));
+	
+	    _this.state = {
+	      showModal: false
+	    };
+	    return _this;
 	  }
 	
 	  _createClass(Items, [{
@@ -1135,147 +1164,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      //   })
 	      // }
 	
-	      var popover = _react2.default.createElement(
-	        Popover,
-	        { title: 'popover' },
-	        'very popover. such engagement'
-	      );
-	      var tooltip = _react2.default.createElement(
-	        Tooltip,
-	        null,
-	        'wow.'
-	      );
-	
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'rct-items' },
-	        _react2.default.createElement(
-	          Modal,
-	          { show: this.state.showModal, onHide: this.close },
-	          _react2.default.createElement(
-	            Modal.Header,
-	            { closeButton: true },
-	            _react2.default.createElement(
-	              Modal.Title,
-	              null,
-	              'Modal heading'
-	            )
-	          ),
-	          _react2.default.createElement(
-	            Modal.Body,
-	            null,
-	            _react2.default.createElement(
-	              'h4',
-	              null,
-	              'Text in a modal'
-	            ),
-	            _react2.default.createElement(
-	              'p',
-	              null,
-	              'Duis mollis, est non commodo luctus, nisi erat porttitor ligula.'
-	            ),
-	            _react2.default.createElement(
-	              'h4',
-	              null,
-	              'Popover in a modal'
-	            ),
-	            _react2.default.createElement(
-	              'p',
-	              null,
-	              'there is a ',
-	              _react2.default.createElement(
-	                OverlayTrigger,
-	                { overlay: popover },
-	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#' },
-	                  'popover'
-	                )
-	              ),
-	              ' here'
-	            ),
-	            _react2.default.createElement(
-	              'h4',
-	              null,
-	              'Tooltips in a modal'
-	            ),
-	            _react2.default.createElement(
-	              'p',
-	              null,
-	              'there is a ',
-	              _react2.default.createElement(
-	                OverlayTrigger,
-	                { overlay: tooltip },
-	                _react2.default.createElement(
-	                  'a',
-	                  { href: '#' },
-	                  'tooltip'
-	                )
-	              ),
-	              ' here'
-	            ),
-	            _react2.default.createElement('hr', null),
-	            _react2.default.createElement(
-	              'h4',
-	              null,
-	              'Overflowing text to show scroll behavior'
-	            ),
-	            _react2.default.createElement(
-	              'p',
-	              null,
-	              'Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.'
-	            ),
-	            _react2.default.createElement(
-	              'p',
-	              null,
-	              'Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.'
-	            ),
-	            _react2.default.createElement(
-	              'p',
-	              null,
-	              'Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.'
-	            ),
-	            _react2.default.createElement(
-	              'p',
-	              null,
-	              'Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.'
-	            ),
-	            _react2.default.createElement(
-	              'p',
-	              null,
-	              'Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.'
-	            ),
-	            _react2.default.createElement(
-	              'p',
-	              null,
-	              'Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.'
-	            ),
-	            _react2.default.createElement(
-	              'p',
-	              null,
-	              'Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.'
-	            ),
-	            _react2.default.createElement(
-	              'p',
-	              null,
-	              'Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.'
-	            ),
-	            _react2.default.createElement(
-	              'p',
-	              null,
-	              'Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.'
-	            )
-	          ),
-	          _react2.default.createElement(
-	            Modal.Footer,
-	            null,
-	            _react2.default.createElement(
-	              Button,
-	              { onClick: this.close },
-	              'Close'
-	            )
-	          )
-	        ),
 	        visibleItems.map(function (item) {
 	          return _react2.default.createElement(_Item2.default, { key: (0, _utils._get)(item, itemIdKey),
 	            item: item,
@@ -1350,7 +1241,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  itemDrag: _react2.default.PropTypes.func,
 	  itemDrop: _react2.default.PropTypes.func,
 	  itemResizing: _react2.default.PropTypes.func,
-	  itemResized: _react2.default.PropTypes.func
+	  itemResized: _react2.default.PropTypes.func,
+	  showModal: _react2.default.PropTypes.bool
 	};
 	Items.defaultProps = {};
 
@@ -1459,6 +1351,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.itemTitle = (0, _utils._get)(props.item, props.keys.itemTitleKey);
 	      this.itemTimeStart = (0, _utils._get)(props.item, props.keys.itemTimeStartKey);
 	      this.itemTimeEnd = (0, _utils._get)(props.item, props.keys.itemTimeEndKey);
+	      this.itemFromDate = (0, _utils._get)(props.item, props.keys.itemFromDate);
+	      this.itemUserName = (0, _utils._get)(props.item, props.keys.itemUserName);
+	      this.itemFullName = (0, _utils._get)(props.item, props.keys.itemFullName);
+	      this.itemPhone = (0, _utils._get)(props.item, props.keys.itemPhone);
+	      this.itemLevel = (0, _utils._get)(props.item, props.keys.itemLevel);
+	      this.itemTalkIdx = (0, _utils._get)(props.item, props.keys.itemTalkIdx);
+	      this.itemTalkInterval = (0, _utils._get)(props.item, props.keys.itemTalkInterval);
+	      this.itemTalkStatus = (0, _utils._get)(props.item, props.keys.itemTalkStatus);
 	    }
 	  }, {
 	    key: 'coordinateToTimeRatio',
@@ -1732,7 +1632,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return null;
 	      }
 	
-	      var classNames = 'rct-item' + (this.props.selected ? ' selected' : '') + (this.canMove(this.props) ? ' can-move' : '') + (this.canResize(this.props) ? ' can-resize' : '') + (this.props.item.className ? ' ' + this.props.item.className : '');
+	      var cNames = '';
+	
+	      if (this.itemTitle == 'Vi') cNames = 'rct-vi-item';else if (this.itemTitle == 'Vo') cNames = 'rct-vo-item';else cNames = 'rct-item';
+	
+	      var classNames = cNames + (this.props.selected ? ' selected' : '') + (this.canMove(this.props) ? ' can-move' : '') + (this.canResize(this.props) ? ' can-resize' : '') + (this.props.item.className ? ' ' + this.props.item.className : '');
 	
 	      var style = {
 	        left: dimensions.left + 'px',
@@ -1749,13 +1653,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	          placement: 'bottom', overlay: _react2.default.createElement(
 	            _reactBootstrap.Popover,
-	            { id: this.itemId, title: this.itemTitle },
+	            { id: this.itemId, title: this.itemTitle + " " + this.itemFromDate },
 	            _react2.default.createElement(
 	              'strong',
 	              null,
-	              'Holy guacamole!'
+	              this.itemFullName,
+	              '(',
+	              this.itemUserName,
+	              ')'
 	            ),
-	            ' Check this info.'
+	            ' ',
+	            _react2.default.createElement('br', null),
+	            this.itemTalkStatus == 1 ? 'EngHan Video' : '',
+	            ' / ',
+	            this.itemTalkInterval,
+	            'min.'
 	          ) },
 	        _react2.default.createElement(
 	          'div',
@@ -1763,7 +1675,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            key: this.itemId,
 	            ref: 'item',
 	            className: classNames,
-	            title: this.itemTitle,
+	
 	            onMouseDown: this.onMouseDown,
 	            onMouseUp: this.onMouseUp,
 	
@@ -20142,7 +20054,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            top: lineHeight * 2 + 'px',
 	            left: left + leftPush + 'px',
 	            width: labelWidth + 'px',
-	            height: height - headerHeight + 'px'
+	            height: height - headerHeight + 200 + 'px'
 	          } }));
 	      });
 	

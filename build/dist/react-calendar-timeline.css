@@ -66,6 +66,110 @@
       padding: 0 6px;
       height: 100%; }
 
+.react-calendar-timeline .rct-items .rct-vi-item {
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+  font-size: 12px;
+  color: black;
+  text-align: center;
+  cursor: pointer;
+  background: #fffb33;
+  border: 1px solid #ffe80e;
+  z-index: 1; }
+  .react-calendar-timeline .rct-items .rct-vi-item.selected {
+    background: #FFC107;
+    border: 1px solid #FF9800;
+    z-index: 2; }
+    .react-calendar-timeline .rct-items .rct-vi-item.selected.can-move {
+      cursor: move; }
+    .react-calendar-timeline .rct-items .rct-vi-item.selected.can-resize {
+      border-right-width: 3px; }
+      .react-calendar-timeline .rct-items .rct-vi-item.selected.can-resize .rct-drag-right {
+        cursor: e-resize; }
+  .react-calendar-timeline .rct-items .rct-vi-item .rct-drag-right {
+    position: absolute;
+    width: 24px;
+    max-width: 20%;
+    min-width: 2px;
+    height: 100%;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    z-index: 10; }
+  .react-calendar-timeline .rct-items .rct-vi-item:hover {
+    z-index: 10; }
+  .react-calendar-timeline .rct-items .rct-vi-item .rct-item-overflow {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    overflow: hidden; }
+    .react-calendar-timeline .rct-items .rct-vi-item .rct-item-overflow:hover {
+      overflow: visible;
+      z-index: 10; }
+    .react-calendar-timeline .rct-items .rct-vi-item .rct-item-overflow .rct-item-content {
+      white-space: nowrap;
+      position: relative;
+      display: inline-block;
+      border-radius: 2px;
+      left: 0;
+      padding: 0 6px;
+      height: 100%; }
+
+.react-calendar-timeline .rct-items .rct-vo-item {
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+  font-size: 12px;
+  color: black;
+  text-align: center;
+  cursor: pointer;
+  background: #faffc5;
+  border: 1px solid #ffe80e;
+  z-index: 1; }
+  .react-calendar-timeline .rct-items .rct-vo-item.selected {
+    background: #FFC107;
+    border: 1px solid #FF9800;
+    z-index: 2; }
+    .react-calendar-timeline .rct-items .rct-vo-item.selected.can-move {
+      cursor: move; }
+    .react-calendar-timeline .rct-items .rct-vo-item.selected.can-resize {
+      border-right-width: 3px; }
+      .react-calendar-timeline .rct-items .rct-vo-item.selected.can-resize .rct-drag-right {
+        cursor: e-resize; }
+  .react-calendar-timeline .rct-items .rct-vo-item .rct-drag-right {
+    position: absolute;
+    width: 24px;
+    max-width: 20%;
+    min-width: 2px;
+    height: 100%;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    z-index: 10; }
+  .react-calendar-timeline .rct-items .rct-vo-item:hover {
+    z-index: 10; }
+  .react-calendar-timeline .rct-items .rct-vo-item .rct-item-overflow {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    overflow: hidden; }
+    .react-calendar-timeline .rct-items .rct-vo-item .rct-item-overflow:hover {
+      overflow: visible;
+      z-index: 10; }
+    .react-calendar-timeline .rct-items .rct-vo-item .rct-item-overflow .rct-item-content {
+      white-space: nowrap;
+      position: relative;
+      display: inline-block;
+      border-radius: 2px;
+      left: 0;
+      padding: 0 6px;
+      height: 100%; }
+
 .react-calendar-timeline .rct-header {
   margin: 0; }
   .react-calendar-timeline .rct-header .rct-label-group {
@@ -77,7 +181,7 @@
     cursor: pointer;
     border-left: 2px solid #bbb;
     color: #ffffff;
-    background: #c52020;
+    background: #ababab;
     border-bottom: 1px solid #bbb;
     cursor: pointer; }
   .react-calendar-timeline .rct-header .rct-label {
@@ -92,7 +196,7 @@
     cursor: pointer; }
     .react-calendar-timeline .rct-header .rct-label.rct-label-only {
       color: #ffffff;
-      background: #c52020; }
+      background: #ababab; }
     .react-calendar-timeline .rct-header .rct-label.rct-first-of-type {
       border-left: 2px solid #bbb; }
 
@@ -106,7 +210,7 @@
   .react-calendar-timeline .rct-sidebar .rct-sidebar-header {
     margin: 0;
     color: #ffffff;
-    background: #c52020;
+    background: #ababab;
     border-right: 1px solid #bbb;
     box-sizing: 'border-box';
     border-bottom: 1px solid #bbb;

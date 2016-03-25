@@ -41,7 +41,7 @@ export default class VerticalLines extends Component {
                top: `${lineHeight * 2}px`,
                left: `${left + leftPush}px`,
                width: `${labelWidth}px`,
-               height: `${height - headerHeight}px`
+               height: `${height - headerHeight + 200}px`
              }} />)
     })
 
