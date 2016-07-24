@@ -49,145 +49,226 @@
   <script type="text/javascript">
 
 
+    /**
+     * form data를 json 객체로 만드는 함수
+     * http://jsfiddle.net/sxGtM/3/
+     * @returns {{}}
+     */
+    $.fn.serializeObject = function()
+    {
+      var o = {};
+      var a = this.serializeArray();
+      $.each(a, function() {
+        if (o[this.name] !== undefined) {
+          if (!o[this.name].push) {
+            o[this.name] = [o[this.name]];
+          }
+          o[this.name].push(this.value || '');
+        } else {
+          o[this.name] = this.value || '';
+        }
+      });
+      return o;
+    };
+
+
     $(document).ready(function() {
-      console.log('test')
 
-     window.test = function ()
-      {
-        //$('#myModal').modal('toggle');
 
-      }
+      initTimeline();
 
     });
 
 
-    GROUP_COUNT = 30
-    ITEM_COUNT = 1000
-    DAYS_IN_PAST = 30
 
-    var groups = []
+    function initTimeline()
+    {
+      var groups = []
 
-    for (var i = 0; i < GROUP_COUNT; i++) {
-      groups.push({
-        id: (i+1)+'',
-        title: faker.name.firstName()
-      })
-    };
+      var items = []
 
-    var items = []
+      //items = items.sort(function(a, b) { return b - a; })
 
-    for (var i = 0; i < ITEM_COUNT; i++) {
-      var startDate = faker.date.recent(DAYS_IN_PAST).valueOf() + (DAYS_IN_PAST * 0.3) * 86400 * 1000;
-      var startValue = moment(startDate).valueOf();
-      var endValue = moment(startDate + faker.random.number({min: 2, max: 20})*15*60*1000).valueOf();
-      items.push({
-        id: i+'',
-        group: faker.random.number({min: 1, max: groups.length})+'',
-        title: faker.hacker.phrase(),
-        start: startValue,
-        end: endValue,
-        phone:'000-000-000',
-        fromDate:'10:20',
-        toDate:'10:40',
-        classView:'V/20',
-        canMove: startValue > new Date().getTime(),
-        canResize: endValue > new Date().getTime(),
-        className: (moment(startDate).day() === 6 || moment(startDate).day() === 0) ? 'item-weekend' : ''
-      })
-    }
+      //var searchData = $('form[name=searchForm]').serializeObject();
 
-    items = items.sort(function(a, b) { return b - a; })
+      var searchData = {searchTalkDate: '2016-08-23', searchLangType: 0, searchServiceType: 1};
 
-    //var minTime = moment().add(-6, 'months').valueOf()
-    //var maxTime = moment().add(6, 'months').valueOf()
-    var minTime = moment().startOf('day').add(-1, 'hour').toDate().valueOf()
-    var maxTime = moment().startOf('day').add(1, 'day').add(1, 'hour').toDate().valueOf()
+      $.ajax({
+        url:'http://localhost:8080/office/talkSchedule/talkSchInfo',
+        dataType:'json',
+        type:'POST',
+        data:JSON.stringify(searchData),
+        contentType:'application/json',
+        success:function(data)
+        {
 
-    var props = {
-      groups: groups,
-      items: items,
-      fixedHeader: 'fixed',
-      canMove: false, // defaults
-      canResize: false,
-      itemsSorted: true,
-      itemTouchSendsClick: false,
-      stackItems: true,
-      itemHeightRatio: 0.75,
+          console.log(data);
 
-      defaultTimeStart: moment().startOf('day').hour(6).toDate(),
-      defaultTimeEnd: moment().startOf('day').add(1, 'day').toDate(),
+          var filter = React.createElement("div", {}, "");
 
-      minShowInHour: true,
-      headerLabelGroupHeight:60,
-      headerLabelHeight: 30,
-      minLabelHeight: 20,
+          // 톡 선생
+          $.each(data.teacher, function(i, itm) {
 
-      keys: {
-        groupIdKey: 'id',
-        groupTitleKey: 'title',
-        itemIdKey: 'id',
-        itemTitleKey: 'title',
-        itemGroupKey: 'group',
-        itemTimeStartKey: 'start',
-        itemTimeEndKey: 'end',
-        itemFromDate: 'fromDate',
-        itemUserName: 'username',
-        itemFullName: 'fullname',
-        itemPhone: 'phone',
-        itemLevel: 'lv',
-        itemTalkIdx: 'talkidx',
-        itemTalkInterval: 'intervaldate',
-        itemTalkStatus: 'talkstatus'
-      },
+            if(itm.adminTalkInfo != '' && itm.adminTalkInfo != null) {
 
-      onItemClick: function(item) {
-        console.log("Clicked: " + item);
-      },
+              //console.log(itm.id);
 
-      onItemMove: function(item, dragTime, newGroupOrder)
-      {
-        var it = items[item];
 
-        //items[item].start = dragTime
+              groups.push({
+                id: itm.id+'',
+                title: itm.adminTalkInfo.nickName + "(" + itm.username + ")" + itm.id
+              });
+            }
 
-        console.log(dragTime)
-        console.log(items[item].start);
-      },
+          });
 
-      moveResizeValidator: function(action, item, time) {
-        if (time < new Date().getTime()) {
-          var newTime = Math.ceil(new Date().getTime() / (15*60*1000)) * (15*60*1000);
-          return newTime;
-        }
 
-        return time
-      },
+          // 톡 스케쥴 부분
+          $.each(data.scheduleList, function(i, itm) {
 
-      // this limits the timeline to -6 months ... +6 months
-      onTimeChange: function (visibleTimeStart, visibleTimeEnd) {
-        if(!isNaN(visibleTimeStart) && !isNaN(visibleTimeEnd)) {
-          if (visibleTimeStart < minTime && visibleTimeEnd > maxTime) {
-            this.updateScrollCanvas(minTime, maxTime)
-          } else if (visibleTimeStart < minTime) {
-            this.updateScrollCanvas(minTime, minTime + (visibleTimeEnd - visibleTimeStart))
-          } else if (visibleTimeEnd > maxTime) {
-            this.updateScrollCanvas(maxTime - (visibleTimeEnd - visibleTimeStart), maxTime)
-          } else {
-            this.updateScrollCanvas(visibleTimeStart, visibleTimeEnd)
+            //console.log(itm.id);
+
+            var startDate = moment(itm.talkDate);
+
+            //console.log(itm)
+
+            items.push({
+              id:itm.id,
+              group: itm.admin.id,
+              title: (itm.status == 3 ? 'Vo' : ((itm.status == 1) && (itm.prevTalkSch != null)) ? 'Vi' : 'V') + itm.admin.id,
+              start:moment(itm.talkDate).hour(itm.talkStartHour).minute(itm.talkStartMinute).valueOf(),
+              end:moment(itm.talkDate).hour(itm.talkEndHour).minute(itm.talkEndMinute).valueOf(),
+              fromDate:(itm.talkStartHour < 10 ? "0" + itm.talkStartHour : itm.talkStartHour)+":"+(itm.talkStartMinute < 10 ? "0"+itm.talkStartMinute : itm.talkStartMinute),
+              phone:itm.talkTel,
+              lv:itm.aPackage.levelName,
+              username:itm.user.userId,
+              fullname:itm.user.userName,
+              talkidx:itm.talkIdx,
+              intervaldate:itm.interDate,
+              talkstatus:itm.talkKind.idx,
+              useridx:itm.user.id,
+              canMove: false,
+              canResize: false,
+              className: (moment(startDate).day() === 6 || moment(startDate).day() === 0) ? 'item-weekend' : ''
+            });
+
+          });
+
+          console.log(items)
+
+          //var today = searchData.searchTalkDate != "" ? moment(searchData.searchTalkDate, "YYYY-MM-DD") : moment();
+
+          //var today = moment()
+
+
+
+
+          var minTime = moment(searchData.searchTalkDate).startOf('day').toDate().valueOf()
+          var maxTime = moment(searchData.searchTalkDate).startOf('day').add(1, 'day').toDate().valueOf()
+
+          var props = {
+            groups: groups,
+            items: items,
+            fixedHeader: 'fixed',
+            canMove: false, // defaults
+            canResize: false,
+            itemsSorted: true,
+            itemTouchSendsClick: false,
+            stackItems: true,
+            itemHeightRatio: 0.75,
+
+            defaultTimeStart: moment(searchData.searchTalkDate, "YYYY-MM-DD").startOf('day').hour(6).toDate(),
+            defaultTimeEnd: moment(searchData.searchTalkDate, "YYYY-MM-DD").startOf('day').add(1, 'day').toDate(),
+
+            minShowInHour: true,
+            headerLabelGroupHeight:60,
+            headerLabelHeight: 30,
+            minLabelHeight: 20,
+
+            keys: {
+              groupIdKey: 'id',
+              groupTitleKey: 'title',
+              itemIdKey: 'id',
+              itemTitleKey: 'title',
+              itemGroupKey: 'group',
+              itemTimeStartKey: 'start',
+              itemTimeEndKey: 'end',
+              itemFromDate: 'fromDate',
+              itemUserName: 'username',
+              itemFullName: 'fullname',
+              itemPhone: 'phone',
+              itemLevel: 'lv',
+              itemTalkIdx: 'talkidx',
+              itemTalkInterval: 'intervaldate',
+              itemTalkStatus: 'talkstatus'
+            },
+
+            onItemClick: function(item) {
+              $.grep(items, function(e){
+                if(e.id == item) {
+                  selectedItem = item;
+
+                  $('span[name=tab_1_time]').text(e.fromDate);
+                  $('span[name=tab_1_phone]').text(e.phone != null ? e.phone : '');
+                  $('span[name=tab_1_level]').text(e.lv);
+                  $('span[name=tab_1_classno]').text(e.talkidx);
+                  $('span[name=tab_1_username]').text(e.fullname + "(" + e.username + ")")
+                  $('span[name=tab_1_classname]').text((e.talkstatus == 1 ? 'Enghan Video' : '') +' / ' + e.intervaldate + 'min.');
+
+
+                  $('#schinfo-modal').modal('show');
+                }
+              });
+            },
+
+            onItemMove: function(item, dragTime, newGroupOrder)
+            {
+              var it = items[item];
+
+              //items[item].start = dragTime
+
+              // console.log(dragTime)
+              // console.log(items[item].start);
+            },
+
+            moveResizeValidator: function(action, item, time) {
+              if (time < new Date().getTime()) {
+                var newTime = Math.ceil(new Date().getTime() / (15*60*1000)) * (15*60*1000);
+                return newTime;
+              }
+
+              return time
+            },
+
+            // this limits the timeline to -6 months ... +6 months
+            onTimeChange: function (visibleTimeStart, visibleTimeEnd) {
+              if(!isNaN(visibleTimeStart) && !isNaN(visibleTimeEnd)) {
+                if (visibleTimeStart < minTime && visibleTimeEnd > maxTime) {
+                  this.updateScrollCanvas(minTime, maxTime)
+                } else if (visibleTimeStart < minTime) {
+                  this.updateScrollCanvas(minTime, minTime + (visibleTimeEnd - visibleTimeStart))
+                } else if (visibleTimeEnd > maxTime) {
+                  this.updateScrollCanvas(maxTime - (visibleTimeEnd - visibleTimeStart), maxTime)
+                } else {
+                  this.updateScrollCanvas(visibleTimeStart, visibleTimeEnd)
+                }
+              } else {
+                visibleTimeStart = minTime
+                visibleTimeEnd = maxTime
+              }
+            }
           }
-        } else {
-          visibleTimeStart = minTime
-          visibleTimeEnd = maxTime
+
+
+          /* jshint undef:false */
+          ReactDOM.render(React.createElement(ReactCalendarTimeline['default'], props, filter), document.getElementById('main'));
+        },
+        error:function(e)
+        {
+          alert(e);
         }
-      }
+      });
     }
-
-    var filter = React.createElement("div", {}, "The filter");
-
-    /* jshint undef:false */
-    ReactDOM.render(React.createElement(ReactCalendarTimeline['default'], props, filter), document.getElementById('main'));
-
-
 
 
   </script>

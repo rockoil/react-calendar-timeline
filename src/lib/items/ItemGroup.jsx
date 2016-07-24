@@ -28,6 +28,8 @@ export default class ItemGroup extends Component {
     const groupOrders = this.props.groupOrders
     const visibleItems = this.props.items
 
+    console.log(_get(item, itemGroupKey));
+
     return (
       <div className='rct-item-group'>
         {visibleItems.map(item => <Item key={_get(item, itemIdKey)}

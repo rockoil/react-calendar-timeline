@@ -16,6 +16,11 @@ module.exports = {
   },
   debug: true,
   devtool: 'sourcemap',
+  devServer: {
+    inline: true,
+    port: 3333,
+    headers: { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Credentials": "true" }
+  },
   module: {
     loaders: [
       {
