@@ -184,6 +184,7 @@ export default class ReactCalendarTimeline extends Component {
 
     this.setState({
       width: width,
+      //topOffset: this.refs.container.getBoundingClientRect().top + window.pageYOffset,
       topOffset: this.refs.container.getBoundingClientRect().top + window.pageYOffset,
       dimensionItems: dimensionItems,
       height: height,
@@ -390,7 +391,7 @@ export default class ReactCalendarTimeline extends Component {
   scrollAreaClick (e) {
     // if not clicking on an item
 
-    if (!hasSomeParentTheClass(e.target, 'rct-item') && !hasSomeParentTheClass(e.target, 'rct-vo-item') && !hasSomeParentTheClass(e.target, 'rct-vi-item')) {
+    if (!hasSomeParentTheClass(e.target, 'rct-item') && !hasSomeParentTheClass(e.target, 'rct-vo-item') && !hasSomeParentTheClass(e.target, 'rct-vi-item') && !hasSomeParentTheClass(e.target, 'rct-vc-item')) {
       if (this.state.selectedItem) {
         this.selectItem(null)
       } else if (this.props.onCanvasClick) {
@@ -568,6 +569,7 @@ export default class ReactCalendarTimeline extends Component {
                groupHeights={groupHeights}
                height={height}
                headerHeight={headerHeight}
+               onViewInfo={this.props.onViewInfo}
 
                fixedHeader={this.props.fixedHeader}
                zIndex={this.props.zIndexStart + 2}>
@@ -621,7 +623,11 @@ export default class ReactCalendarTimeline extends Component {
     return {dimensionItems, height, groupHeights, groupTops}
   }
 
-
+  onViewInfo(groupId, groupTitle) {
+    if(this.props.onViewInfo) {
+      this.props.onViewInfo(groupId, groupTitle);
+    }
+  }
 
   render () {
     const {items, groups, headerLabelGroupHeight, headerLabelHeight, minShowInHour} = this.props

@@ -91,10 +91,10 @@
 
       //var searchData = $('form[name=searchForm]').serializeObject();
 
-      var searchData = {searchTalkDate: '2016-08-23', searchLangType: 0, searchServiceType: 1};
+      var searchData = {searchTalkDate: '2016-08-08', searchLangType: 0, searchServiceType: 1};
 
       $.ajax({
-        url:'http://localhost:8080/office/talkSchedule/talkSchInfo',
+        url:'http://www.enghan.co.kr/office/talkSchedule/talkSchInfo',
         dataType:'json',
         type:'POST',
         data:JSON.stringify(searchData),
@@ -135,7 +135,7 @@
             items.push({
               id:itm.id,
               group: itm.admin.id,
-              title: (itm.status == 3 ? 'Vo' : ((itm.status == 1) && (itm.prevTalkSch != null)) ? 'Vi' : 'V') + itm.admin.id,
+              title: itm.status == 2 ? 'Vo' : (itm.status == 3) ? 'Vc' : ((itm.status == 1) && (itm.prevTalkSch != null)) ? 'Vi' : 'V',
               start:moment(itm.talkDate).hour(itm.talkStartHour).minute(itm.talkStartMinute).valueOf(),
               end:moment(itm.talkDate).hour(itm.talkEndHour).minute(itm.talkEndMinute).valueOf(),
               fromDate:(itm.talkStartHour < 10 ? "0" + itm.talkStartHour : itm.talkStartHour)+":"+(itm.talkStartMinute < 10 ? "0"+itm.talkStartMinute : itm.talkStartMinute),
@@ -256,6 +256,11 @@
                 visibleTimeStart = minTime
                 visibleTimeEnd = maxTime
               }
+            },
+
+            onViewInfo: function(groupId, groupTitle)
+            {
+              console.log(groupId+'--'+groupTitle);
             }
           }
 

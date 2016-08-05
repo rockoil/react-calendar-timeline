@@ -348,6 +348,8 @@ export default class Item extends Component {
       cNames = 'rct-vi-item'
     else if(this.itemTitle == 'Vo')
       cNames = 'rct-vo-item'
+    else if(this.itemTitle == 'Vc')
+      cNames = 'rct-vc-item'
     else
       cNames = 'rct-item'
 

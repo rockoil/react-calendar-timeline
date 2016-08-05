@@ -340,6 +340,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      this.setState({
 	        width: width,
+	        //topOffset: this.refs.container.getBoundingClientRect().top + window.pageYOffset,
 	        topOffset: this.refs.container.getBoundingClientRect().top + window.pageYOffset,
 	        dimensionItems: dimensionItems,
 	        height: height,
@@ -573,7 +574,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function scrollAreaClick(e) {
 	      // if not clicking on an item
 	
-	      if (!(0, _utils.hasSomeParentTheClass)(e.target, 'rct-item') && !(0, _utils.hasSomeParentTheClass)(e.target, 'rct-vo-item') && !(0, _utils.hasSomeParentTheClass)(e.target, 'rct-vi-item')) {
+	      if (!(0, _utils.hasSomeParentTheClass)(e.target, 'rct-item') && !(0, _utils.hasSomeParentTheClass)(e.target, 'rct-vo-item') && !(0, _utils.hasSomeParentTheClass)(e.target, 'rct-vi-item') && !(0, _utils.hasSomeParentTheClass)(e.target, 'rct-vc-item')) {
 	        if (this.state.selectedItem) {
 	          this.selectItem(null);
 	        } else if (this.props.onCanvasClick) {
@@ -760,6 +761,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          groupHeights: groupHeights,
 	          height: height,
 	          headerHeight: headerHeight,
+	          onViewInfo: this.props.onViewInfo,
 	
 	          fixedHeader: this.props.fixedHeader,
 	          zIndex: this.props.zIndexStart + 2 },
@@ -809,6 +811,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	
 	      return { dimensionItems: dimensionItems, height: height, groupHeights: groupHeights, groupTops: groupTops };
+	    }
+	  }, {
+	    key: 'onViewInfo',
+	    value: function onViewInfo(groupId, groupTitle) {
+	      if (this.props.onViewInfo) {
+	        this.props.onViewInfo(groupId, groupTitle);
+	      }
 	    }
 	  }, {
 	    key: 'render',
@@ -1634,7 +1643,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      var cNames = '';
 	
-	      if (this.itemTitle == 'Vi') cNames = 'rct-vi-item';else if (this.itemTitle == 'Vo') cNames = 'rct-vo-item';else cNames = 'rct-item';
+	      if (this.itemTitle == 'Vi') cNames = 'rct-vi-item';else if (this.itemTitle == 'Vo') cNames = 'rct-vo-item';else if (this.itemTitle == 'Vc') cNames = 'rct-vc-item';else cNames = 'rct-item';
 	
 	      var classNames = cNames + (this.props.selected ? ' selected' : '') + (this.canMove(this.props) ? ' can-move' : '') + (this.canResize(this.props) ? ' can-resize' : '') + (this.props.item.className ? ' ' + this.props.item.className : '');
 	
@@ -19466,6 +19475,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Sidebar).call(this, props));
 	
+	    _this.onViewInfo = function (e) {
+	      if (_this.props.onViewInfo) {
+	        var groupId = e.target.dataset.group;
+	        var groupTitle = e.target.dataset.grouptitle;
+	
+	        _this.props.onViewInfo(groupId, groupTitle);
+	      }
+	    };
+	
 	    _this.state = {
 	      scrollTop: 0,
 	      componentTop: 0
@@ -19529,6 +19547,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this3 = this;
+	
 	      var _props = this.props;
 	      var fixedHeader = _props.fixedHeader;
 	      var width = _props.width;
@@ -19584,12 +19604,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.props.groups.forEach(function (group, index) {
 	        var elementStyle = {
 	          height: groupHeights[index] - 1 + 'px',
-	          lineHeight: groupHeights[index] - 1 + 'px'
+	          lineHeight: groupHeights[index] - 1 + 'px',
+	          cursor: 'pointer'
 	        };
 	
 	        groupLines.push(_react2.default.createElement(
 	          'div',
-	          { key: (0, _utils._get)(group, groupIdKey), className: 'rct-sidebar-row' + (i % 2 === 0 ? ' rct-sidebar-row-even' : ' rct-sidebar-row-odd'), style: elementStyle },
+	          { key: (0, _utils._get)(group, groupIdKey), className: 'rct-sidebar-row' + (i % 2 === 0 ? ' rct-sidebar-row-even' : ' rct-sidebar-row-odd'), style: elementStyle,
+	            onClick: _this3.onViewInfo, 'data-group': group.id, 'data-grouptitle': group.title },
 	          (0, _utils._get)(group, groupTitleKey)
 	        ));
 	        i += 1;

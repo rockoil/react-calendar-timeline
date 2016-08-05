@@ -63,6 +63,19 @@ export default class Sidebar extends Component {
     this.setComponentTop()
   }
 
+  onViewInfo = (e) =>
+  {
+    if(this.props.onViewInfo) {
+      const groupId = e.target.dataset.group;
+      const groupTitle = e.target.dataset.grouptitle;
+
+
+
+      this.props.onViewInfo(groupId, groupTitle)
+    }
+
+  }
+
   render () {
     const {
       fixedHeader, width, lineHeight, zIndex, groupHeights, height, headerHeight
@@ -113,11 +126,13 @@ export default class Sidebar extends Component {
     this.props.groups.forEach((group, index) => {
       const elementStyle = {
         height: `${groupHeights[index] - 1}px`,
-        lineHeight: `${groupHeights[index] - 1}px`
+        lineHeight: `${groupHeights[index] - 1}px`,
+        cursor: `pointer`
       }
 
       groupLines.push(
-        <div key={_get(group, groupIdKey)} className={'rct-sidebar-row' + (i % 2 === 0 ? ' rct-sidebar-row-even' : ' rct-sidebar-row-odd')} style={elementStyle}>
+        <div key={_get(group, groupIdKey)} className={'rct-sidebar-row' + (i % 2 === 0 ? ' rct-sidebar-row-even' : ' rct-sidebar-row-odd')} style={elementStyle}
+          onClick={this.onViewInfo} data-group={group.id} data-grouptitle={group.title}>
           {_get(group, groupTitleKey)}
         </div>
       )
